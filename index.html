@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<title>Terminal 09 — Rainy Night</title>
+<meta name="description" content="A procedurally generated rainy night on a container terminal. Hand-written WebGL2 engine, no dependencies." />
+<link rel="stylesheet" href="./styles.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23070b0e'/%3E%3Crect x='7' y='13' width='18' height='3' fill='%23ffb257'/%3E%3Crect x='10' y='17' width='4' height='9' fill='%23dfe7ea'/%3E%3Crect x='18' y='17' width='4' height='9' fill='%23dfe7ea'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <canvas id="scene" aria-label="3D scene: a container terminal at night in heavy rain"></canvas>
+
+  <div id="vignette-html" aria-hidden="true"></div>
+
+  <header class="hud hud--top" id="hudTop">
+    <div class="brand">
+      <span class="dot" id="statusDot"></span>
+      <span class="brand__name">TERMINAL&nbsp;09</span>
+      <span class="brand__sep">/</span>
+      <span class="brand__sub">BERTH&nbsp;4&nbsp;&middot;&nbsp;23:47</span>
+    </div>
+    <div class="meta">
+      <span id="fpsLabel">-- fps</span>
+      <span class="brand__sep">/</span>
+      <span id="qualityLabel">--</span>
+    </div>
+  </header>
+
+  <div class="hud hud--left" id="hudLeft">
+    <button class="panelToggle" id="panelToggle" type="button" aria-expanded="true">SETTINGS</button>
+    <div class="panel" id="panel">
+      <label class="row">
+        <span>Rain</span>
+        <input id="cRain" type="range" min="0" max="1" step="0.01" value="0.7" />
+        <output id="oRain">0.70</output>
+      </label>
+      <label class="row">
+        <span>Wind</span>
+        <input id="cWind" type="range" min="0" max="1" step="0.01" value="0.45" />
+        <output id="oWind">0.45</output>
+      </label>
+      <label class="row">
+        <span>Exposure</span>
+        <input id="cExp" type="range" min="-2" max="2" step="0.05" value="0.7" />
+        <output id="oExp">0.70</output>
+      </label>
+      <label class="row row--check">
+        <span>Fog volume</span>
+        <input id="cFog" type="checkbox" checked />
+      </label>
+      <label class="row row--check">
+        <span>Lens rain</span>
+        <input id="cLens" type="checkbox" />
+      </label>
+      <div class="row row--modes">
+        <span>Camera</span>
+        <div class="seg" id="camSeg">
+          <button data-cam="cinematic" class="is-on" type="button">CINEMA</button>
+          <button data-cam="dock" type="button">DOCK</button>
+          <button data-cam="free" type="button">FREE</button>
+        </div>
+      </div>
+      <div class="row row--modes">
+        <span>Quality</span>
+        <div class="seg" id="qualitySeg">
+          <button data-q="low" type="button">LOW</button>
+          <button data-q="medium" type="button">MED</button>
+          <button data-q="high" class="is-on" type="button">HIGH</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="hud hud--bottom" id="hudBottom">
+    <div class="hint"><kbd>H</kbd> hide UI <kbd>F</kbd> free cam <kbd>R</kbd> reset <kbd>Space</kbd> pause</div>
+    <div class="hint hint--right">WASD + mouse when free &middot; procedural &middot; no assets</div>
+  </footer>
+
+  <div id="loader" class="loader">
+    <div class="loader__inner">
+      <div class="loader__title">TERMINAL 09</div>
+      <div class="loader__bar"><i id="loaderBar"></i></div>
+      <div class="loader__msg" id="loaderMsg">building berth&hellip;</div>
+    </div>
+  </div>
+
+  <div id="fatal" class="fatal" hidden>
+    <div>
+      <h1>WebGL2 unavailable</h1>
+      <p id="fatalMsg">This scene needs a browser with WebGL2 enabled.</p>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

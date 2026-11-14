@@ -1,0 +1,14 @@
+{
+  "name": "terminal-09",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A procedurally generated rainy night on a container terminal, rendered by a hand-written WebGL2 engine.",
+  "scripts": {
+    "serve": "python -m http.server 8080",
+    "shot": "node tools/shot.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.0.0"
+  }
+}

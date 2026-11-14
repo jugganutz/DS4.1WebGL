@@ -1,0 +1,5 @@
+node_modules/
+shots/
+.git/
+*.log
+.DS_Store
