@@ -259,11 +259,13 @@ async function boot() {
   let fpsTimer = 0;
   let slowFrames = 0;
   let fastFrames = 0;
+  let elapsed = 0;
 
   function frame(now) {
     requestAnimationFrame(frame);
     const dtRaw = Math.min(0.08, (now - last) / 1000);
     last = now;
+    elapsed += dtRaw;
     const dt = state.paused ? 0 : dtRaw;
     state.time += dt;
     const t = state.time;
@@ -330,14 +332,16 @@ async function boot() {
       $('fpsLabel').textContent = `${fps.toFixed(0)} fps`;
       $('qualityLabel').textContent = `${state.quality} · ${(renderer.q.scale * renderer.adaptive * 100).toFixed(0)}%`;
 
-      if (!state.paused) {
-        if (fps < 48) { slowFrames++; fastFrames = 0; } else if (fps > 58) { fastFrames++; slowFrames = 0; }
-        if (slowFrames >= 3 && renderer.adaptive > 0.62) {
+      if (!state.paused && elapsed > 4.0) {
+        // Ignore the first seconds: shader compilation and the GPU clock ramp make
+        // the initial frames unrepresentative, and dropping quality for them is sticky.
+        if (fps < 46) { slowFrames++; fastFrames = 0; } else if (fps > 57) { fastFrames++; slowFrames = 0; }
+        if (slowFrames >= 5 && renderer.adaptive > 0.62) {
           renderer.adaptive = Math.max(0.62, renderer.adaptive - 0.08);
           slowFrames = 0;
           resize();
-        } else if (fastFrames >= 10 && renderer.adaptive < 1) {
-          renderer.adaptive = Math.min(1, renderer.adaptive + 0.05);
+        } else if (fastFrames >= 6 && renderer.adaptive < 1) {
+          renderer.adaptive = Math.min(1, renderer.adaptive + 0.08);
           fastFrames = 0;
           resize();
         }
